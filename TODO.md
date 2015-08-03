@@ -20,11 +20,16 @@ Ein möglicher Programmverlauf wäre wie folgt:
 
 ```
 $ ruby mastermind.rb
-RRRR: BB--
-RRYY: WBW-
-RYRP: WBW-
-YRRM: BBB-
-YRRO: BBBB
+RRRR
+=> BB--
+RRYY
+=> WBW-
+RYRP
+=> WBW-
+YRRM
+=> BBB-
+YRRO
+=> BBBB
 
 Code cracked in 5 turns.
 ```
