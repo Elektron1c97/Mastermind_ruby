@@ -13,7 +13,7 @@ puts "Hello #{playername}, your code is generated!"
 puts "Avaliable Characters:\t#{Game::AVAILABLE_CODES.join("\t")}"
 
 # Game
-until game.game_finished
+until game.finished?
   print "#{game.try_count}: "
   try = gets.strip
   begin
