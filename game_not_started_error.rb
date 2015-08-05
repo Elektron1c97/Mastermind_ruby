@@ -1,2 +1,0 @@
-class GameNotStartedError < StandardError
-end

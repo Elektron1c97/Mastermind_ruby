@@ -1,50 +1,56 @@
 require_relative 'code'
-require_relative 'GameNotStartedError'
+require_relative 'game_not_started_error'
 
 class Game
   attr_reader :try_count
 
-  def initialize(playername = "Derp", solution: Code.random)
-    @try_count = 1
-    @playername = playername
+  def initialize(ui, solution: Code.random)
     @solution_code = solution
+    @ui = ui
+    @try_count = 1
     @started = false
   end
 
-  def finished?
-    @game_finished
+  # Method to start a game
+  # Requests by calling read_playername for the playername on the UI
+  def start
+    @started = true
+    @playername = @ui.read_playername
+    @ui.display_welcome_message(@playername)
+    run
   end
 
-  def guess(input_code)
-    if @started
-      result = input_code.assessment_for_solution(@solution_code)
-      # Check if game is ended
-      self.end if result.solution?
-      # If game is not ended, count the tries
-      @try_count += 1
+  private
 
-      result
-    else
-      raise GameNotStartedError.new("Game is not started!")
+  # Method to run the game (prevent from dying if the solution was not found yet)
+  # Requests by calling read_next_guess for a new guess on the UI
+  # Shows an assessment on the UI by calling display_assessment
+  def run
+    while running?
+      guess = @ui.read_next_guess(@try_count)
+      if guess.valid?
+        result = guess.assessment_for_solution(@solution_code)
+        if result.solution?
+          stop
+        else
+          @try_count += 1
+          @ui.display_assessment(result)
+        end
+      else
+        @ui.display_invalid_code
+      end
     end
   end
 
-  def start
-    @started = true
-    @on_start.call
-  end
-
-  def end
-    @on_end.call
+  # Method to stop the game
+  # On the ui display_end_game is called
+  def stop
     @started = false
+    @ui.display_end_game(@try_count)
   end
 
-  def on_start(&block)
-    @on_start = block
+  # Method to check if the game is running
+  def running?
+    @started
   end
-
-  def on_end(&block)
-    @on_end = block
-  end
-
 end
