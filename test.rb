@@ -17,10 +17,15 @@ puts "This is an automated test"
 [%w(R O Y Y), %w(R O G R)] => %w(B B - -),
 }.each do |args, res|
   game = Game.new('Automated Testing', solution: args[1])
-  unless (output = game.guess(args.first.join(""))) == res.join("")
-    puts "#{args.inspect} \nExpected:\t#{res.join.inspect}\nGot:\t\t#{output.inspect}"
-  else
-    print "."
+  game.on_start do
+    expected = Code.parse(res.join(""))
+    actual = game.guess(Code.new(args.first))
+    unless actual == expected
+      puts "#{args.inspect} \nExpected:\t#{expected}\nGot:\t\t#{actual}"
+    else
+      print "."
+    end
   end
+  game.start
 end
 puts " done"
