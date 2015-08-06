@@ -31,10 +31,6 @@ class Code
     self == Code.solution
   end
 
-  def to_s
-    @code.join
-  end
-
   # Get assesment for solution
   # e.g. self is YYRG and solution is MMGR it will return WW-- (Code Object)
   def assessment_for_solution(solution)
@@ -98,5 +94,9 @@ class Code
 
   def hash
     to_s.hash
+  end
+
+  def to_s
+    @code.join
   end
 end
