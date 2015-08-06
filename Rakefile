@@ -20,5 +20,5 @@ namespace :test do
 end
 
 task :run do
-  trap(0) { system "ruby bin/mastermind.rb" }
+  trap(0) { system "bin/mastermind" }
 end
