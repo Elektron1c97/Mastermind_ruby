@@ -1,5 +1,4 @@
 require_relative 'code'
-require_relative 'game_not_started_error'
 
 class Game
   attr_reader :try_count
