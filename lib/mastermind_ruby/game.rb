@@ -1,5 +1,3 @@
-require_relative 'code'
-
 module MastermindRuby
   class Game
     attr_reader :try_count

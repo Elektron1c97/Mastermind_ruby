@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    mastermind_ruby (0.0.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,6 +12,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler
+  mastermind_ruby!
   rake
 
 BUNDLED WITH

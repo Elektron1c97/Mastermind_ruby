@@ -1,3 +1,5 @@
+require "bundler/gem_tasks"
+
 task :default => :test
 
 desc 'Run all tests'
@@ -20,5 +22,5 @@ namespace :test do
 end
 
 task :run do
-  trap(0) { system "bin/mastermind" }
+  trap(0) { system "exe/mastermind" }
 end
