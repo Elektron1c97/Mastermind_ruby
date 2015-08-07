@@ -1,7 +1,6 @@
 module MastermindRuby
   class Code
     AVAILABLE_CHARACTERS = %w(R Y G O M P)
-    CODE_PATTERN = /\A[#{AVAILABLE_CHARACTERS.join("")}]{4}\z/
 
     def initialize(code)
       @code = code
@@ -11,27 +10,22 @@ module MastermindRuby
     # Params:
     # +str+:: the string which is to parse to a code object
     def self.parse(str)
-      new str.split('')
+      new str.upcase.split('')
     end
 
     # Method to generate a code
-    def self.random
-      new 4.times.map { AVAILABLE_CHARACTERS.sample }
+    def self.random(length)
+      new length.times.map { AVAILABLE_CHARACTERS.sample }
     end
 
     # Returns a code object containing 'BBBB'
-    def self.solution
-      @solution ||= Code.parse('BBBB')
+    def self.solution(length)
+      new length.times.map{ 'B' }
     end
 
-    # Checks if a code is valid (must be 4 characters long and can only contain the available characters)
+    # Returns if a code is valid (matches the code pattern (R, Y, G, O, M, P))
     def valid?
-      @code.join =~ CODE_PATTERN
-    end
-
-    # Returns true if code is 'BBBB'
-    def solution?
-      self == Code.solution
+      self === /\A[#{AVAILABLE_CHARACTERS.join}]+\z/
     end
 
     # Get assesment for solution
@@ -87,6 +81,10 @@ module MastermindRuby
           'X'
         end
       end
+    end
+
+    def ===(other)
+      other === to_s
     end
 
     def [](index)

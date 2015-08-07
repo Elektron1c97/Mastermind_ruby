@@ -10,6 +10,7 @@ module MastermindRuby
   # Must have methods
   # * :read_playername
   # * :read_next_guess
+  # * :read_code_length
   # * :display_welcome_message
   # * :display_assessment
   # * :display_invalid_code
@@ -21,6 +22,18 @@ module MastermindRuby
       # User inital input
       print 'Please enter a name: '
       gets.chomp
+    end
+
+    # Method which reads the code length
+    # Return the length of the code you want as an Fixnum
+    def read_code_length
+      print 'How long should the code be (Hit enter for default): '
+      code = gets.strip.to_i
+      if code != 0
+        code
+      else
+        4
+      end
     end
 
     # Method which is called when the next turn is initiated
@@ -36,9 +49,8 @@ module MastermindRuby
     # Params:
     # +playername+:: the playername which was read before with :read_playername
     def display_welcome_message(playername)
-      puts '-------- Mastermind Ruby Project -------'
       puts "Hello #{playername}, your code is generated!"
-      puts "Avaliable Characters:\t#{MastermindRuby::Code::AVAILABLE_CHARACTERS.join("\t")}"
+      puts "Avaliable Characters:\t#{MastermindRuby::Code::AVAILABLE_CHARACTERS.join("\t")} (Case insensitive)"
     end
 
     # Method which is called when the guess is evaluated
