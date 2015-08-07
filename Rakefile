@@ -24,3 +24,7 @@ end
 task :run do
   trap(0) { system "exe/mastermind" }
 end
+
+task :console do
+  trap(0) { system "irb -r'mastermind_ruby'" }
+end
