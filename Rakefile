@@ -38,6 +38,10 @@ namespace :test do
   end
 end
 
+task :statistics do
+  trap(0) { system "bin/statistics" }
+end
+
 task :run do
   trap(0) { system "exe/mastermind" }
 end
