@@ -83,6 +83,10 @@ module MastermindRuby
       end
     end
 
+    def count(obj)
+      @code.count(obj)
+    end
+
     def ===(other)
       other === to_s
     end

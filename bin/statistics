@@ -1,0 +1,88 @@
+#!/usr/bin/env ruby
+require_relative '../lib/mastermind_ruby/solver/brute_force_solver'
+require_relative '../lib/mastermind_ruby/solver/intelligent_brute_force_solver'
+require 'benchmark'
+
+def show_wait_spinner(fps=10)
+  chars = %w[| / - \\]
+  delay = 1.0/fps
+  iter = 0
+  spinner = Thread.new do
+    while iter do  # Keep spinning until told otherwise
+      print chars[(iter+=1) % chars.length]
+      sleep delay
+      print "\b"
+    end
+  end
+  yield.tap{       # After yielding to the block, save the return value
+    iter = false   # Tell the thread to exit, cleaning up after itself…
+    spinner.join   # …and wait for it to do so.
+  }                # Use the block's return value as the method's
+end
+
+def standard_devitation(arr)
+  avg = arr.inject(:+) / arr.length
+  devitations = arr.map do |item|
+    (item - avg)**2
+  end
+  Math.sqrt(devitations.inject(:+) / arr.length)
+end
+
+def median(arr)
+  sorted = arr.sort
+  len = sorted.length
+  (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+end
+
+# Game count input
+games = 10
+print 'How many games should the solvers solve: '
+games_input = gets.strip.to_i
+unless games_input == 0
+  games = games_input
+end
+
+# Code length input
+code_length = 4
+print 'Code length (Hit enter for default): '
+code_length_input = gets.strip.to_i
+unless code_length_input == 0
+  code_length = code_length_input
+end
+
+solvers = [IntelligentBruteForceSolver, BruteForceSolver]
+counts = {}
+benchmarks = {}
+
+puts "Generating statistics..."
+
+show_wait_spinner{
+  games.times do
+    generated_code = MastermindRuby::Code.random(code_length)
+    solvers.each do |solver_class|
+      counts[solver_class] ||= []
+      benchmarks[solver_class] ||= []
+      solver = solver_class.new(code_length: code_length)
+      ui = SolveInterface.new(solver)
+      game = MastermindRuby::Game.new(ui, solution: generated_code)
+      time = Benchmark.realtime do
+        game.start
+      end
+      benchmarks[solver_class] << time
+      counts[solver_class] << ui.current_try
+    end
+  end
+}
+puts "------------------ Statistics for #{games} games with code length #{code_length}  ----------------"
+puts ''
+solvers.each do |solver|
+  tries = counts[solver].sort
+  puts "---------- #{solver} -----------"
+  puts "- Total time needed to solve \033[1m#{games}\033[0m games: \033[1m#{'%.4f' % benchmarks[solver].inject(:+)}\033[0m seconds"
+  puts "- Total: \033[1m#{tries.inject(:+)}\033[0m tries"
+  puts "- Average per game: \033[1m#{tries.inject(:+) / tries.length}\033[0m tries"
+  puts "- Standard devitation: \033[1m#{'%.4f' % standard_devitation(tries)}\033[0m"
+  puts "- Median: \033[1m#{median(tries)}\033[0m"
+  puts "- Best: \033[1m#{tries.first}\033[0m tries"
+  puts "- Worst: \033[1m#{tries.last}\033[0m tries"
+end

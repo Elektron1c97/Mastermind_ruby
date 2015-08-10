@@ -49,7 +49,7 @@ module MastermindRuby
             @ui.display_assessment(result)
           end
         else
-          @ui.display_invalid_code
+          @ui.display_invalid_code(guess)
         end
       end
     end

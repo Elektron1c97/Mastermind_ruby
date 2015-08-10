@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mastermind_ruby (0.0.4)
+    mastermind_ruby (0.0.5)
 
 GEM
   remote: https://rubygems.org/
