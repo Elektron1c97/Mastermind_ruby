@@ -61,7 +61,7 @@ module MastermindRuby
     end
 
     # Method which is called when the guess was not a valid code
-    def display_invalid_code
+    def display_invalid_code(code)
       puts 'Invalid code'
     end
 
