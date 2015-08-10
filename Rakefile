@@ -2,8 +2,25 @@ require "bundler/gem_tasks"
 
 task :default => :test
 
+desc 'Run all solvers'
+task :solve => ["solve:intelligent_brute_force", "solve:brute_force"]
+
 desc 'Run all tests'
 task :test => ["test:unit", "test:integration"]
+
+namespace :solve do
+  desc 'Brute force solve'
+  task :brute_force do
+    puts "----------- Running brute force solve ------------"
+    require_relative 'lib/mastermind_ruby/solver/brute_force_solver.rb'
+  end
+
+  desc 'Intelligent brute force solve'
+  task :intelligent_brute_force do
+    puts "----------- Intelligent brute force solve ------------"
+    require_relative 'lib/mastermind_ruby/solver/intelligent_brute_force_solver.rb'
+  end
+end
 
 namespace :test do
   desc 'Run all unit tests'
