@@ -11,7 +11,7 @@ class SolveInterface
   end
 
   def read_playername
-    @solver.name
+    @solver.class.name
   end
 
   def read_code_length

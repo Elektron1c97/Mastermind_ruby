@@ -3,7 +3,7 @@ require_relative 'lib/mastermind_ruby/version'
 Gem::Specification.new do |s|
   s.name        = 'mastermind_ruby'
   s.version     = MastermindRuby::VERSION
-  s.date        = '2015-08-06'
+  s.date        = '2015-08-10'
   s.summary     = "A mastermind library"
   s.description = "Mastermind or Master Mind is a code-breaking game for two players.
                    The modern game with pegs was invented in 1970 by Mordecai Meirowitz, an Israeli postmaster and telecommunications expert.

@@ -1,10 +1,9 @@
 require_relative 'solve_interface'
 
 class IntelligentBruteForceSolver
-  attr_reader :name, :code_length
+  attr_reader :code_length
 
-  def initialize(name = "Intelligent Brute Force Solver", code_length: 4)
-    @name = name
+  def initialize(code_length: 4)
     @code_length = code_length
     @basic_codes = generate_start_codes
     @basic_try = -1
@@ -25,14 +24,13 @@ class IntelligentBruteForceSolver
 
   def assessment_received(result)
     unless result == @code_length.times.map { '-' }.join
-      # Should be ["G", "G", "P", "P"]
       result.count('B').times { @existing_chars << MastermindRuby::Code::AVAILABLE_CHARACTERS[@basic_try] }
     end
   end
 
   def generate_start_codes
-    MastermindRuby::Code::AVAILABLE_CHARACTERS.each.map do |char|
-      @code_length.times.map { char }.join
+    MastermindRuby::Code::AVAILABLE_CHARACTERS.map do |char|
+      char * @code_length
     end
   end
 

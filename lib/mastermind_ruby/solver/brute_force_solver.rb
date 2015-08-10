@@ -1,10 +1,9 @@
 require_relative 'solve_interface'
 
 class BruteForceSolver
-  attr_reader :name, :code_length
+  attr_reader :code_length
 
-  def initialize(name = "Brute Force Solver", code_length: 4)
-    @name = name
+  def initialize(code_length: 4)
     @code_length = code_length
     @input = generate_start_codes
   end
@@ -20,4 +19,5 @@ class BruteForceSolver
   def assessment_received(result)
     # idiot solver ignores what assessment is received
   end
+
 end

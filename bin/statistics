@@ -22,7 +22,7 @@ end
 
 def standard_devitation(arr)
   avg = arr.inject(:+) / arr.length
-  devitations = arr.each.map do |item|
+  devitations = arr.map do |item|
     (item - avg)**2
   end
   Math.sqrt(devitations.inject(:+) / arr.length)
