@@ -1,5 +1,6 @@
 require_relative '../lib/mastermind_ruby/game'
 require_relative '../lib/mastermind_ruby/code'
+require 'minitest/autorun'
 
 def assert_array_order_equal(expected, actual)
   if actual == expected

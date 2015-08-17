@@ -1,12 +1,10 @@
 require "bundler/gem_tasks"
+require 'rake/testtask'
 
 task :default => :test
 
 desc 'Run all solvers'
 task :solve => ["solve:intelligent_brute_force", "solve:brute_force"]
-
-desc 'Run all tests'
-task :test => ["test:unit", "test:integration"]
 
 namespace :solve do
   desc 'Brute force solve'
@@ -22,22 +20,6 @@ namespace :solve do
   end
 end
 
-namespace :test do
-  desc 'Run all unit tests'
-  task :unit do
-    puts "----------- Running unit tests ------------"
-    file_list = FileList.new('test/unit/*_test.rb')
-    file_list.each { |file| require_relative file }
-  end
-
-  desc 'Run all integration tests'
-  task :integration do
-    puts "----------- Running integration tests ------------"
-    file_list = FileList.new('test/integration/*_test.rb')
-    file_list.each { |file| require_relative file }
-  end
-end
-
 task :statistics do
   trap(0) { system "bin/statistics" }
 end
@@ -48,4 +30,16 @@ end
 
 task :console do
   trap(0) { system "irb -r'mastermind_ruby'" }
+end
+
+Rake::TestTask.new do |t|
+  t.libs << "unit_test"
+  t.test_files = FileList['test/unit/*_test.rb']
+  t.verbose = true
+end
+
+Rake::TestTask.new do |t|
+  t.libs << "integration_test"
+  t.test_files = FileList['test/integration/*_test.rb']
+  t.verbose = true
 end
