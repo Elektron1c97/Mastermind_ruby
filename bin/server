@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+require_relative '../lib/mastermind_ruby'
+require 'socket'
+
+port = 2222
+server = TCPServer.new port
+puts "Server Created listening on port #{port}... "
+loop do
+  Thread.start(server.accept) do |client|
+    begin
+      ip = Socket.unpack_sockaddr_in(client.getpeername)[1]
+      puts "Client connected with ip #{ip}"
+      interface = MastermindRuby::ConsoleInterface.new client
+      game = MastermindRuby::Game.new(interface)
+      game.start
+
+      restart = true
+      while restart
+        client.print "Play again? (y/n):"
+        choose = client.gets.strip
+        if choose.casecmp("Y") == 0
+          restart = true
+          game.restart
+        else
+          restart = false
+        end
+      end
+      client.puts "Bye!"
+    rescue Exception => e
+      puts e.backtrace
+    ensure
+      client.close
+    end
+  end
+end

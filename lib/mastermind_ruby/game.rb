@@ -22,6 +22,16 @@ module MastermindRuby
       run
     end
 
+    # Method to restart the game
+    # Resets the solution code to a new one (auto generated)
+    # Resets the try count to 1
+    def restart
+      @started = true
+      @solution_code = Code.random(@code_length)
+      @try_count = 1
+      run
+    end
+
     private
 
     # Checks if the guess has a valid length
