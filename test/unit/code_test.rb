@@ -1,26 +1,47 @@
 require_relative '../test_helper'
 
-{
-  [%w(Y R O G), %w(X Y C M)] => %w(W - - -),
-  [%w(Y R O G), %w(Y R C M)] => %w(B B - -),
-  [%w(Y R O G), %w(O R Y M)] => %w(B W W -),
-  [%w(Y R O G), %w(O Y R M)] => %w(W W W -),
-  [%w(Y R O G), %w(M M M M)] => %w(- - - -),
-  [%w(Y Y R M), %w(O P Y Y)] => %w(W W - -),
-  [%w(Y Y Y M), %w(O O O Y)] => %w(W - - -),
-  [%w(O O O Y), %w(Y Y Y M)] => %w(W - - -),
-  [%w(Y P Y Y), %w(Y Y O O)] => %w(B W - -),
-  [%w(Y Y P P), %w(O Y Y O)] => %w(B W - -),
-  [%w(Y Y P P), %w(O Y O O)] => %w(B - - -),
-  [%w(R O Y Y), %w(R O G R)] => %w(B B - -)
-}.each do |args, res|
-  code = MastermindRuby::Code.new(args[0])
-  assessment = code.assessment_for_solution(MastermindRuby::Code.new(args[1]))
-  puts unless assessment == MastermindRuby::Code.new(res)
-  if assessment == MastermindRuby::Code.new(res)
-    print '.'
-  else
-    puts "#{args.inspect} \nExpected:\t#{res.join.inspect}\nGot:\t\t#{assessment.to_s.inspect}"
+class CodeTester < Minitest::Test
+
+  def setup
+
   end
+
+  def test_everything_hit
+    solution = %w(Y Y O G)
+    input = %w(Y Y O G)
+    expected = %w(B B B B)
+    assert_for_solution_input_expected(solution, input, expected)
+  end
+
+  def test_nothing_hit
+    solution = %w(R R P P)
+    input = %w(Y Y O G)
+    expected = %w(- - - -)
+    assert_for_solution_input_expected(solution, input, expected)
+  end
+
+  def test_everything_contained
+    solution = %w(G O Y Y)
+    input = %w(Y Y O G)
+    expected = %w(W W W W)
+    assert_for_solution_input_expected(solution, input, expected)
+  end
+
+  def test_some_more_spefic
+    {
+      [%w(Y P Y Y), %w(Y Y O O)] => %w(B W - -),
+      [%w(Y Y P P), %w(O Y Y O)] => %w(B W - -),
+      [%w(Y Y P P), %w(O Y O O)] => %w(B - - -),
+      [%w(R O Y Y), %w(R O G R)] => %w(B B - -),
+    }.each do |args, res|
+      assert_for_solution_input_expected(args[1], args[0], res)
+    end
+  end
+
+  def assert_for_solution_input_expected(solution, input, expected)
+    code = MastermindRuby::Code.new(input)
+    assessment = code.assessment_for_solution(MastermindRuby::Code.new(solution))
+    assert_equal assessment, MastermindRuby::Code.new(expected)
+  end
+
 end
-puts ' done'
